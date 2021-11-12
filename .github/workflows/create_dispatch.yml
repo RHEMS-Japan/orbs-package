@@ -9,6 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     name: update
     steps:
+    - name: Generate Access Token
+      id: generate_token
+      uses: tibdex/github-app-token@v1
+      with:
+        app_id: ${{ secrets.APP_FORGITHUBACTIONS_ID }}
+        private_key: ${{ secrets.APP_FORGITHUBACTIONS_KEY }}
+    
+    - name: Git checkout
+      uses: actions/checkout@v2
+      with:
+        ref: refs/heads/alpha
+        fetch-depth: 0
+        token: ${{ env.ACCESS_TOKEN }}
+
     - name: Update subpackage
       run: |
         (
