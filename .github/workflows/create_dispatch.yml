@@ -1,0 +1,33 @@
+name: update all package
+
+on:
+  repository_dispatch:
+    types: [ blue-mole* ]
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    name: update
+    steps:
+    - name: Update subpackage
+      run: |
+        (
+          cd ..
+          git clone https://github.com/RHEMS-Japan/orbs-k8s-tools.git
+        )
+        ls ../orbs-k8s-tools
+        cp ../orbs-k8s-tools/src/commands/*.yml src/commands
+
+    # Commit
+    - name: Git commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "[skip ci]"
+        branch: refs/heads/${{ env.BRANCH_NAME }}
+
+    # Push
+    - name: Git push
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        branch: refs/heads/${{ env.BRANCH_NAME }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
