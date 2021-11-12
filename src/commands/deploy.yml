@@ -1,0 +1,28 @@
+description: >
+  Run to blue-deploy.
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+parameters:
+  config-path:
+    type: string
+    default: "./config.yml"
+    description: "The path to the blue-deploy config file."
+  appname:
+    type: string
+    description: "The appname of the deploy target"
+  blue-deploy-licence:
+    type: env_var_name
+    default: BLUE_DEPLOY_LICENCE
+    description: "The license of blue-deploy."
+
+steps:
+  - install
+  - run:
+      name: confirm config.yml
+      command: cat << parameters.config-path >>
+  - run:
+      name: deploy
+      command: |
+        export BLUE_DEPLOY_LICENCE=$(eval echo "\$<< parameters.blue-deploy-licence >>")
+        echo $BLUE_DEPLOY_LICENCE
+        deploy -f << parameters.config-path >> << parameters.appname >>
