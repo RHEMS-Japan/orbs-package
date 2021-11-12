@@ -35,9 +35,9 @@ jobs:
           git clone https://github.com/RHEMS-Japan/${{ env.REPO_NAME }}.git
         )
         cp ../${{ env.REPO_NAME }}/src/commands/*.yml src/commands || true
-        cp ../${{ env.REPO_NAME }}/src/jobs/*.yml     src/commands || true
-        cp ../${{ env.REPO_NAME }}/src/scripts/*.sh   src/commands || true
-        cp ../${{ env.REPO_NAME }}/src/tests/*.bats   src/commands || true
+        cp ../${{ env.REPO_NAME }}/src/jobs/*.yml     src/jobs     || true
+        cp ../${{ env.REPO_NAME }}/src/scripts/*.sh   src/scripts  || true
+        cp ../${{ env.REPO_NAME }}/src/tests/*.bats   src/tests    || true
 
     # Commit
     - name: Git commit
