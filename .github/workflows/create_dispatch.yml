@@ -40,11 +40,11 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "[skip ci]"
-        branch: refs/heads/${{ env.BRANCH_NAME }}
+        branch: refs/heads/alpha
 
     # Push
     - name: Git push
       uses: ad-m/github-push-action@v0.5.0
       with:
-        branch: refs/heads/${{ env.BRANCH_NAME }}
+        branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
