@@ -2,7 +2,7 @@ name: update all package
 
 on:
   repository_dispatch:
-    types: [ blue-mole* ]
+    types: [ orbs-* ]
 
 jobs:
   update:
