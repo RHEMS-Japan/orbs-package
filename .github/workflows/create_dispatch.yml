@@ -15,6 +15,9 @@ jobs:
       with:
         app_id: ${{ secrets.APP_FORGITHUBACTIONS_ID }}
         private_key: ${{ secrets.APP_FORGITHUBACTIONS_KEY }}
+
+    - name : set env
+      run: echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
     
     - name: Git checkout
       uses: actions/checkout@v2
