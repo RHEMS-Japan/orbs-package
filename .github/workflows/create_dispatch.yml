@@ -18,7 +18,7 @@ jobs:
 
     - name : set env
       run: echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
-    
+
     - name: Git checkout
       uses: actions/checkout@v2
       with:
@@ -29,11 +29,17 @@ jobs:
     - name: Update subpackage
       run: |
         (
-          cd ..
+          mkdir ../orbs && cd $_
           git clone https://github.com/RHEMS-Japan/orbs-k8s-tools.git
+          git clone https://github.com/RHEMS-Japan/orbs-blue-deploy.git
+          git clone https://github.com/RHEMS-Japan/orbs-cisync.git
         )
-        ls ../orbs-k8s-tools
-        cp ../orbs-k8s-tools/src/commands/*.yml src/commands
+        for dir in $(find ../orbs -maxdepth 1 -type d); do
+          cp ${dir}/src/commands/*.yml src/commands
+          cp ${dir}/src/jobs/*.yml     src/commands
+          cp ${dir}/src/scripts/*.sh   src/commands
+          cp ${dir}/src/tests/*.bats   src/commands
+        done
 
     # Commit
     - name: Git commit
