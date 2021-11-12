@@ -34,7 +34,7 @@ jobs:
           git clone https://github.com/RHEMS-Japan/orbs-blue-deploy.git
           git clone https://github.com/RHEMS-Japan/orbs-cisync.git
         )
-        for dir in $(find ../orbs -maxdepth 1 -type d); do
+        for dir in $(find ../orbs -mindepth 1 -maxdepth 1 -type d); do
           cp ${dir}/src/commands/*.yml src/commands
           cp ${dir}/src/jobs/*.yml     src/commands
           cp ${dir}/src/scripts/*.sh   src/commands
