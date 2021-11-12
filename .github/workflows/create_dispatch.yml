@@ -35,10 +35,10 @@ jobs:
           git clone https://github.com/RHEMS-Japan/orbs-cisync.git
         )
         for dir in $(find ../orbs -mindepth 1 -maxdepth 1 -type d); do
-          cp ${dir}/src/commands/*.yml src/commands 2>/dev/null
-          cp ${dir}/src/jobs/*.yml     src/commands 2>/dev/null
-          cp ${dir}/src/scripts/*.sh   src/commands 2>/dev/null
-          cp ${dir}/src/tests/*.bats   src/commands 2>/dev/null
+          cp ${dir}/src/commands/*.yml src/commands || true
+          cp ${dir}/src/jobs/*.yml     src/commands || true
+          cp ${dir}/src/scripts/*.sh   src/commands || true
+          cp ${dir}/src/tests/*.bats   src/commands || true
         done
 
     # Commit
