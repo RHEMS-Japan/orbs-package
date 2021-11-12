@@ -16,8 +16,10 @@ jobs:
         app_id: ${{ secrets.APP_FORGITHUBACTIONS_ID }}
         private_key: ${{ secrets.APP_FORGITHUBACTIONS_KEY }}
 
-    - name : set env
-      run: echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
+    - name: set env
+      run: |
+        echo "REPO_NAME=`echo ${{ github.event.action }}`" >> $GITHUB_ENV
+        echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
 
     - name: Git checkout
       uses: actions/checkout@v2
@@ -29,17 +31,13 @@ jobs:
     - name: Update subpackage
       run: |
         (
-          mkdir ../orbs && cd $_
-          git clone https://github.com/RHEMS-Japan/orbs-k8s-tools.git
-          git clone https://github.com/RHEMS-Japan/orbs-blue-deploy.git
-          git clone https://github.com/RHEMS-Japan/orbs-cisync.git
+          cd ..
+          git clone https://github.com/RHEMS-Japan/${{ env.REPO_NAME }}.git
         )
-        for dir in $(find ../orbs -mindepth 1 -maxdepth 1 -type d); do
-          cp ${dir}/src/commands/*.yml src/commands || true
-          cp ${dir}/src/jobs/*.yml     src/commands || true
-          cp ${dir}/src/scripts/*.sh   src/commands || true
-          cp ${dir}/src/tests/*.bats   src/commands || true
-        done
+        cp ../${{ env.REPO_NAME }}/src/commands/*.yml src/commands || true
+        cp ../${{ env.REPO_NAME }}/src/jobs/*.yml     src/commands || true
+        cp ../${{ env.REPO_NAME }}/src/scripts/*.sh   src/commands || true
+        cp ../${{ env.REPO_NAME }}/src/tests/*.bats   src/commands || true
 
     # Commit
     - name: Git commit
