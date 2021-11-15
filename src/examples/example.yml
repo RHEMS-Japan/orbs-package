@@ -1,13 +1,15 @@
 description: >
-  Sample example description.
+  For more information, please refer to the following.
+
+  https://circleci.com/developer/orbs/orb/rhems-japan/k8s-tools
+
+  https://circleci.com/developer/orbs/orb/rhems-japan/cisync
+
+  https://circleci.com/developer/orbs/orb/rhems-japan/blue-deploy
 # Provide a use-case based example for using this orb.
 # Everything in the `usage` section will be displayed in the orb registry.
 # Comments are not retained.
 usage:
   version: 2.1
   orbs:
-    <orb-name>: <namespace>/<orb-name>@1.2.3
-  workflows:
-    use-my-orb:
-      jobs:
-        - <orb-name>/<job-name>
+    package: rhems-japan/package@x.y.z
