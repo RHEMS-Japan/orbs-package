@@ -1,0 +1,24 @@
+description: >
+  Run "skaffold run -p << profile >>" command.
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+parameters:
+  path:
+    type: string
+    default: "."
+    description: "The path to the skaffold.yml file."
+  profile:
+    type: string
+    default: ""
+    description: "The profile name of skaffold.yml"
+steps:
+  - install-skaffold
+  - run:
+      name: skaffold run
+      command: |
+        cd << parameters.path >>
+        if [ -n << parameters.profile >> ]; then
+          skaffold run -p << parameters.profile >>
+        else
+          skaffold run
+        fi
