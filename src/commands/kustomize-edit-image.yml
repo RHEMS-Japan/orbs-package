@@ -17,9 +17,11 @@ steps:
   - install-kustomize
   - run:
       name: kustomize edit set image
-      working_directory: << parameters.path >>
-      command: kustomize edit set image << parameters.from >>=<< parameters.to >>
+      command: |
+        cd << parameters.path >>
+        kustomize edit set image << parameters.from >>=<< parameters.to >>
   - run:
       name: confirm
-      working_directory: << parameters.path >>
-      command: kustomize build
+      command: |
+        cd << parameters.path >>
+        kustomize build
