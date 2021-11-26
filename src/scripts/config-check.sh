@@ -6,7 +6,9 @@ set -o pipefail
 _basepath=$(eval echo "${CONFIG_DIR}")
 _targets="${_basepath}/bases|${_basepath}/commands|${_basepath}/jobs|${_basepath}/workflows"
 
-_cmd=".circleci/circleci-config-merge_1.1.1_linux_amd64/circleci-config-merge"
+mkdir ./cmd
+wget https://github.com/suzuki-shunsuke/circleci-config-merge/releases/download/v1.1.1/circleci-config-merge_1.1.1_linux_amd64.tar.gz -O - | tar xvf - -C ./cmd
+_cmd="./cmd/circleci-config-merge"
 remerge_md5=$(git ls-files | grep -E "${_targets}" | xargs "${_cmd}" merge | md5sum)
 
 echo "${now_md5}"
