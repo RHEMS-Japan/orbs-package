@@ -8,6 +8,10 @@ description: >
   https://circleci.com/developer/orbs/orb/rhems-japan/blue-deploy
 
   https://circleci.com/developer/orbs/orb/rhems-japan/secret-manager
+
+  https://circleci.com/developer/orbs/orb/rhems-japan/config-merge
+
+  https://circleci.com/developer/orbs/orb/rhems-japan/workflow
 # Provide a use-case based example for using this orb.
 # Everything in the `usage` section will be displayed in the orb registry.
 # Comments are not retained.
