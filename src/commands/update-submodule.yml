@@ -6,20 +6,15 @@ parameters:
   module-name:
     type: string
     description: "Submodule name to be updated."
-  fingerprint:
-    type: string
-    description: "Fingerprint of SSH keys that have write permission to the repository. It is recommended that you refer to https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key and use the deployment key."
 
 steps:
-  - add_ssh_keys:
-      fingerprints:
-        - << parameters.fingerprint >>
   - run:
       name: confirm
       command: echo << parameters.module-name >>
   - run:
       name: update submodule
       command: |
+        module_name=$(eval echo << parameters.module-name >>)
         git config --global user.email "submodule.updater@rhems-japan.co.jp"
         git config --global user.name "submodule-updater"
         git submodule update --init --remote --recursive << parameters.module-name >>
