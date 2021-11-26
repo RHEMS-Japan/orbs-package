@@ -1,0 +1,28 @@
+description: >
+  This command echos "Hello World" using file inclusion.
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+parameters:
+  module-name:
+    type: string
+    description: "Submodule name to be updated."
+  fingerprint:
+    type: string
+    description: "Fingerprint of SSH keys that have write permission to the repository. It is recommended that you refer to https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key and use the deployment key."
+
+steps:
+  - add_ssh_keys:
+      fingerprints:
+        - << parameters.fingerprint >>
+  - run:
+      name: confirm
+      command: echo << parameters.module-name >>
+  - run:
+      name: update submodule
+      command: |
+        git config --global user.email "submodule.updater@rhems-japan.co.jp"
+        git config --global user.name "submodule-updater"
+        git submodule update --init --remote --recursive << parameters.module-name >>
+        git status
+        git commit -a -m "[skip ci] update submodule: << parameters.module-name >>" || true
+        git push -u origin ${CIRCLE_BRANCH}
