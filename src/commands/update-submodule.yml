@@ -14,10 +14,14 @@ steps:
   - run:
       name: update submodule
       command: |
-        module_name=$(eval echo << parameters.module-name >>)
-        git config --global user.email "submodule.updater@rhems-japan.co.jp"
-        git config --global user.name "submodule-updater"
-        git submodule update --init --remote --recursive << parameters.module-name >>
-        git status
-        git commit -a -m "[skip ci] update submodule: << parameters.module-name >>" || true
-        git push -u origin ${CIRCLE_BRANCH}
+        if [ -n << parameters.module-name >> ]; then
+          module_name=$(eval echo << parameters.module-name >>)
+          git config --global user.email "submodule.updater@rhems-japan.co.jp"
+          git config --global user.name "submodule-updater"
+          git submodule update --init --remote --recursive << parameters.module-name >>
+          git status
+          git commit -a -m "[skip ci] update submodule: << parameters.module-name >>" || true
+          git push -u origin ${CIRCLE_BRANCH}
+        else
+          echo "target not found."
+        fi
