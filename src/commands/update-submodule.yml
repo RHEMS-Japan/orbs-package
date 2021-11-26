@@ -1,5 +1,5 @@
 description: >
-  This command echos "Hello World" using file inclusion.
+  Update the submodule and push it with [skip ci].
 # What will this command do?
 # Descriptions should be short, simple, and clear.
 parameters:
