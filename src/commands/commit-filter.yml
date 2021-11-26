@@ -1,0 +1,26 @@
+description: >
+  This command echos "Hello World" using file inclusion.
+# What will this command do?
+# Descriptions should be short, simple, and clear.
+parameters:
+  target-list:
+    type: string
+    description: "blue-mole,auth-mole-route,mole-route-electron"
+  stop-no-target:
+    type: boolean
+    default: false
+    description: ""
+
+steps:
+  - run:
+      name: commit filter
+      command: |
+        commit_subject=$(git log -1 --pretty=%s | awk '{print $1}')
+        reg=$(echo << parameters.target-list >> | sed -e 's/ //'  -e 's/,/|/')
+        match=$(echo "${commit_subject}" | sed -rn "/.*\[${reg}\].*/p")
+        echo ${match}
+        if << parameters.stop-no-target >> && [ -z "${match}" ]; then
+          echo "stop job"
+          circleci-agent step halt
+        fi
+        echo "export TARGET=`echo ${match} | sed -e 's/\[//' -e 's/\]//'`" >> $BASH_ENV
