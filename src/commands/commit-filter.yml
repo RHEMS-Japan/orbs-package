@@ -1,15 +1,15 @@
 description: >
-  This command echos "Hello World" using file inclusion.
+  Filter the target from the latest commit message and save it in the environment variable "TARGET".
 # What will this command do?
 # Descriptions should be short, simple, and clear.
 parameters:
   target-list:
     type: string
-    description: "blue-mole,auth-mole-route,mole-route-electron"
+    description: "If you want to match '[bar] test commit', specify 'bar'. If there is multiple phrases, specify them separated by commas."
   stop-no-target:
     type: boolean
     default: false
-    description: ""
+    description: "Whether or not to terminate the job if the target is not found."
 
 steps:
   - run:

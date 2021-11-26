@@ -1,24 +1,24 @@
 description: >
-  This command echos "Hello World" using file inclusion.
+  Trigger the workflow using the CircleCI API v2.
 # What will this command do?
 # Descriptions should be short, simple, and clear.
 parameters:
   org-or-user:
     type: string
-    description: ""
+    description: "Your GitHub organization name."
   repo:
     type: string
-    description: ""
+    description: "Your GitHub repository name."
   token:
     type: env_var_name
     default: CIRCLE_API_TOKEN
-    description: ""
+    description: "CircleCI personal api token. Please refer to the following https://circleci.com/docs/2.0/managing-api-tokens/#creating-a-personal-api-token"
   param:
     type: string
     default: >-
       {\"run-integration-tests\": true, \"dev-orb-version\":
       \"dev:${CIRCLE_SHA1:0:7}\"}
-    description: ""
+    description: "Map of pipeline parameters that the new pipeline will be invoked with."
 
 steps:
   - run:
