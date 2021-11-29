@@ -36,6 +36,6 @@ steps:
         token=$(eval echo "$<< parameters.token >>")
         curl --request POST \
         --url https://circleci.com/api/v2/project/github/<< parameters.org-or-user >>/<< parameters.repo >>/pipeline \
-        --header "Circle-Token: ${PERSONAL_API_TOKEN}" \
+        --header "Circle-Token: ${token}" \
         --header "content-type: application/json" \
         --data @pipelineparams.json
