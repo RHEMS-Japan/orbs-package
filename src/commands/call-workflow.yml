@@ -1,5 +1,5 @@
 description: >
-  Trigger the workflow using the CircleCI API v2.
+  hoge Trigger the workflow using the CircleCI API v2.
 # What will this command do?
 # Descriptions should be short, simple, and clear.
 parameters:
