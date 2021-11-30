@@ -53,6 +53,9 @@ jobs:
         branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+
     # master
     - name: Git checkout
       uses: actions/checkout@v2
