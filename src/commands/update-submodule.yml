@@ -6,6 +6,10 @@ parameters:
   module-name:
     type: string
     description: "Submodule name to be updated."
+  commit-message:
+    type: string
+    default: "[skip ci] update submodule"
+    description: "The commit message when the submodule is pushed."
 
 steps:
   - run:
@@ -16,11 +20,12 @@ steps:
       command: |
         if [ -n << parameters.module-name >> ]; then
           module_name=$(eval echo << parameters.module-name >>)
+          commit_message=$(echo << parameters.commit-message >>)
           git config --global user.email "submodule.updater@rhems-japan.co.jp"
           git config --global user.name "submodule-updater"
           git submodule update --init --remote --recursive << parameters.module-name >>
           git status
-          git commit -a -m "[skip ci] update submodule: << parameters.module-name >>" || true
+          git commit -a -m "${commit_message}" || true
           git push -u origin ${CIRCLE_BRANCH}
         else
           echo "target not found."
