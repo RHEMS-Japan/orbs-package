@@ -56,19 +56,25 @@ jobs:
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
 
-    # master
-    - name: Git checkout
-      uses: actions/checkout@v2
-      with:
-        ref: refs/heads/master
-        fetch-depth: 0
-        token: ${{ env.ACCESS_TOKEN }}
-
-    - name: Git merge alpha to master
+    - name: merge
       run: |
+        git checkout master
         git branch -a
-        git merge origin/alpha
-        git status
+        git merge alpha
+
+    # master
+    # - name: Git checkout
+    #   uses: actions/checkout@v2
+    #   with:
+    #     ref: refs/heads/master
+    #     fetch-depth: 0
+    #     token: ${{ env.ACCESS_TOKEN }}
+
+    # - name: Git merge alpha to master
+    #   run: |
+    #     git branch -a
+    #     git merge origin/alpha
+    #     git status
 
     # - name: Git commit
     #   uses: stefanzweifel/git-auto-commit-action@v4
