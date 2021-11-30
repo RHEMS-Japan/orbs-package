@@ -64,7 +64,8 @@ jobs:
     - name: Git merge alpha to master
       run: |
         git branch -a
-    #     git merge alpha
+        git merge alpha
+        git status
 
     # - name: Git commit
     #   uses: stefanzweifel/git-auto-commit-action@v4
