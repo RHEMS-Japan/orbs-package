@@ -43,7 +43,7 @@ jobs:
 
     - name: set orb version
       run: |
-        for orb in "k8s-tools cisync blue-deploy secret-manager config-merge workflow"; do
+        for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow; do
           latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
           sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
         done
@@ -79,7 +79,7 @@ jobs:
 
     - name: set orb version
       run: |
-        for orb in "k8s-tools cisync blue-deploy secret-manager config-merge workflow"; do
+        for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow; do
           latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
           sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
         done
