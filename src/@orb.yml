@@ -3,17 +3,17 @@ version: 2.1
 description: >
   This is an orb package maintained by RHEMS Japan.
 
-  rhems-japan/k8s-tools: 0.0.20
+  rhems-japan/k8s-tools: 0.0.5
 
-  rhems-japan/cisync: 0.0.0
+  rhems-japan/cisync: 0.0.7
 
-  rhems-japan/blue-deploy: 0.0.0
+  rhems-japan/blue-deploy: 0.0.3
 
-  rhems-japan/secret-manager: 0.0.0
+  rhems-japan/secret-manager: 0.0.1
 
-  rhems-japan/config-merge: 0.0.0
+  rhems-japan/config-merge: 0.0.3
 
-  rhems-japan/workflow: 0.0.0
+  rhems-japan/workflow: 0.0.8
 # What will your orb allow users to accomplish?
 # Descriptions should be short, simple, and informative.
 
