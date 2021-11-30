@@ -20,7 +20,6 @@ jobs:
       run: |
         echo "REPO_NAME=`echo ${{ github.event.action }}`" >> $GITHUB_ENV
         echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
-
     # alpha
     - name: Git checkout
       uses: actions/checkout@v2
@@ -40,7 +39,13 @@ jobs:
         cp ../${{ env.REPO_NAME }}/src/scripts/*.sh    src/scripts   || true
         cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
         cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
-
+    
+    - name: set orb version
+      run: |
+        for orb in "k8s-tools cisync blue-deploy secret-manager config-merge workflow"; do
+          latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
+          sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
+        done
     - name: Git commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
@@ -53,6 +58,7 @@ jobs:
         branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+
     # master
     - name: Git checkout
       uses: actions/checkout@v2
@@ -61,19 +67,27 @@ jobs:
         fetch-depth: 0
         token: ${{ env.ACCESS_TOKEN }}
 
-    - name: Git merge alpha to master
+    - name: Update subpackage
       run: |
-        git branch -a
-    #     git merge alpha
+        cp ../${{ env.REPO_NAME }}/src/commands/*.yml  src/commands  || true
+        cp ../${{ env.REPO_NAME }}/src/jobs/*.yml      src/jobs      || true
+        cp ../${{ env.REPO_NAME }}/src/scripts/*.sh    src/scripts   || true
+        cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
+        cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
+    - name: set orb version
+      run: |
+        for orb in "k8s-tools cisync blue-deploy secret-manager config-merge workflow"; do
+          latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
+          sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
+        done
+    - name: Git commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "[semver:patch]"
+        branch: refs/heads/master
 
-    # - name: Git commit
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: "[semver:patch]"
-    #     branch: refs/heads/alpha
-
-    # - name: Git push
-    #   uses: ad-m/github-push-action@v0.5.0
-    #   with:
-    #     branch: refs/heads/alpha
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Git push
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        branch: refs/heads/master
+        github_token: ${{ secrets.GITHUB_TOKEN }}
