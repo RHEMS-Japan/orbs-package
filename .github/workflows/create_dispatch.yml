@@ -40,7 +40,7 @@ jobs:
         cp ../${{ env.REPO_NAME }}/src/scripts/*.sh    src/scripts   || true
         cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
         cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
-    
+
     - name: set orb version
       run: |
         for orb in "k8s-tools cisync blue-deploy secret-manager config-merge workflow"; do
@@ -87,7 +87,7 @@ jobs:
     - name: Git commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: "[skip ci]"
+        commit_message: "[semver:patch]"
         branch: refs/heads/master
 
     - name: Git push
