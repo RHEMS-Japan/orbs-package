@@ -64,7 +64,7 @@ jobs:
     - name: Git merge alpha to master
       run: |
         git branch -a
-        git merge alpha
+        git merge origin/alpha
         git status
 
     # - name: Git commit
