@@ -21,6 +21,7 @@ jobs:
         echo "REPO_NAME=`echo ${{ github.event.action }}`" >> $GITHUB_ENV
         echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
 
+    # alpha
     - name: Git checkout
       uses: actions/checkout@v2
       with:
@@ -40,16 +41,39 @@ jobs:
         cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
         cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
 
-    # Commit
     - name: Git commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "[skip ci]"
         branch: refs/heads/alpha
 
-    # Push
     - name: Git push
       uses: ad-m/github-push-action@v0.5.0
       with:
         branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    # master
+    - name: Git checkout
+      uses: actions/checkout@v2
+      with:
+        ref: refs/heads/master
+        fetch-depth: 0
+        token: ${{ env.ACCESS_TOKEN }}
+
+    - name: Git merge alpha to master
+      run: |
+        git branch -a
+    #     git merge alpha
+
+    # - name: Git commit
+    #   uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     commit_message: "[semver:patch]"
+    #     branch: refs/heads/alpha
+
+    # - name: Git push
+    #   uses: ad-m/github-push-action@v0.5.0
+    #   with:
+    #     branch: refs/heads/alpha
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
