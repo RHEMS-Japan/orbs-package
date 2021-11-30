@@ -53,15 +53,6 @@ jobs:
         branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    # - name: Setup tmate session
-    #   uses: mxschmitt/action-tmate@v3
-
-    # - name: merge
-    #   run: |
-    #     git checkout master
-    #     git branch -a
-    #     git merge alpha
-    #     git status
 
     # master
     - name: Git checkout
@@ -71,20 +62,26 @@ jobs:
         fetch-depth: 0
         token: ${{ env.ACCESS_TOKEN }}
 
-    - name: Git merge alpha to master
+    - name: Update subpackage
       run: |
-        git branch -a
-        git merge origin/alpha
-        git status
+        (
+          cd ..
+          git clone https://github.com/RHEMS-Japan/${{ env.REPO_NAME }}.git
+        )
+        cp ../${{ env.REPO_NAME }}/src/commands/*.yml  src/commands  || true
+        cp ../${{ env.REPO_NAME }}/src/jobs/*.yml      src/jobs      || true
+        cp ../${{ env.REPO_NAME }}/src/scripts/*.sh    src/scripts   || true
+        cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
+        cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
 
-    # - name: Git commit
-    #   uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     commit_message: "[semver:patch]"
-    #     branch: refs/heads/alpha
+    - name: Git commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "[semver:patch]"
+        branch: refs/heads/master
 
-    # - name: Git push
-    #   uses: ad-m/github-push-action@v0.5.0
-    #   with:
-    #     branch: refs/heads/alpha
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Git push
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        branch: refs/heads/master
+        github_token: ${{ secrets.GITHUB_TOKEN }}
