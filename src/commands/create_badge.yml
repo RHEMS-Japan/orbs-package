@@ -4,7 +4,7 @@ description: >
 parameters:
   api_token:
     type: string
-    default: $API_TOKEN
+    default: $BADGE_API_TOKEN
     description: "The API Token of RHEMS BADGES. (Required)"
   organization:
     type: string
