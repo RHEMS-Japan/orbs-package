@@ -38,9 +38,9 @@ steps:
   - add_ssh_keys:
       fingerprints:
         - << parameters.fingerprint >>
-  - when: 
+  - when:
       condition: << parameters.checkout >>
-      steps: 
+      steps:
         - checkout
   - run:
       when: always
