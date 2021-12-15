@@ -1,0 +1,53 @@
+description: >
+  Generate badges from the services of RHEMS BADGES.
+
+executor: exe-badges
+
+parameters:
+  api_token:
+    type: string
+    default: $BADGE_API_TOKEN
+    description: "The API Token of RHEMS BADGES. (Required)"
+  organization:
+    type: string
+    default: $CIRCLE_PROJECT_USERNAME
+    description: "organization name (Required)"
+  repo:
+    type: string
+    default: $CIRCLE_PROJECT_REPONAME
+    description: "if repo is empty it will use ${CIRCLE_PROJECT_REPONAME} (optional)"
+  app:
+    type: string
+    default: $CIRCLE_PROJECT_REPONAME
+    description: "app name (Required)"
+  status:
+    type: enum
+    default: "true"
+    description: |
+        set status true or false. (Required. "true" or "false")
+    enum:
+        - "true"
+        - "false"
+  branch:
+    type: string
+    default: $CIRCLE_BRANCH
+    description: "if branche is empty it will use ${CIRCLE_BRANCH} (optional)"
+  color:
+    type: string
+    default: ""
+    description: "you can set color (optional)"
+  text:
+    type: string
+    default: ""
+    description: "write text for right side (optional)"
+
+steps:
+  - create_badge:
+      api_token: << parameters.api_token >>
+      organization: << parameters.organization >>
+      repo: << parameters.repo >>
+      app: << parameters.app >>
+      branch: << parameters.branch >>
+      status: << parameters.status >>
+      color: << parameters.color >>
+      text: << parameters.text >>

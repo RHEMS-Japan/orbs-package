@@ -1,6 +1,8 @@
 description: >
   Generate badges from the services of RHEMS BADGES.
 
+executor: exe-badges
+
 parameters:
   fingerprint:
     type: string
@@ -35,21 +37,11 @@ parameters:
     description: "GitHub user.email"
 
 steps:
-  - add_ssh_keys:
-      fingerprints:
-        - << parameters.fingerprint >>
-  - when: 
-      condition: << parameters.checkout >>
-      steps: 
-        - checkout
-  - run:
-      when: always
-      name: update README
-      environment:
-        GIT_USER_NAME: << parameters.user_name >>
-        GIT_USER_EMAIL: << parameters.user_email >>
-        FILE_PATH: << parameters.file_path >>
-        UPDATE_README: << parameters.update_readme >>
-        ONLY_DATE: << parameters.only_date >>
-        BRANCH: << parameters.branch >>
-      command: << include(scripts/update_readme.sh) >>
+- update_readme:
+    user_name: << parameters.user_name >>
+    user_email: << parameters.user_email >>
+    file_path: << parameters.file_path >>
+    update_readme: << parameters.update_readme >>
+    only_date: << parameters.only_date >>
+    branch: << parameters.branch >>
+    fingerprint: << parameters.fingerprint >>
