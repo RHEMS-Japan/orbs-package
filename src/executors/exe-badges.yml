@@ -1,0 +1,4 @@
+description: >
+  This is a sample executor using Docker and Node.
+docker:
+  - image: cimg/base:stable
