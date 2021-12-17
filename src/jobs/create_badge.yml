@@ -26,8 +26,8 @@ parameters:
     description: |
         set status true or false. (Required. "true" or "false")
     enum:
-        - "true"
-        - "false"
+      - "true"
+      - "false"
   branch:
     type: string
     default: $CIRCLE_BRANCH
