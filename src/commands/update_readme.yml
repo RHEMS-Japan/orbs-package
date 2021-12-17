@@ -2,13 +2,6 @@ description: >
   Generate badges from the services of RHEMS BADGES.
 
 parameters:
-  fingerprint:
-    type: string
-    description: "Fingerprint of SSH keys that have write permission to the repository. It is recommended that you refer to https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key and use the deployment key."
-  checkout:
-    type: boolean
-    default: true
-    description: "Whether to check out first.(default:true)"
   update_readme:
     type: string
     default: "true"
@@ -35,13 +28,6 @@ parameters:
     description: "GitHub user.email"
 
 steps:
-  - add_ssh_keys:
-      fingerprints:
-        - << parameters.fingerprint >>
-  - when:
-      condition: << parameters.checkout >>
-      steps:
-        - checkout
   - run:
       when: always
       name: update README

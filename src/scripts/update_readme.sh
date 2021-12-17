@@ -15,7 +15,7 @@ update_readme () {
     git add ${FILE_PATH}
     echo "--- run git ---"
     git commit -m "[skip ci] ${FILE_PATH} Update"
-    git push origin ${BRANCH}
+    git push origin ${CIRCLE_BRANCH}
   fi
 }
 
