@@ -16,7 +16,7 @@ steps:
       name: commit filter
       command: |
         commit_subject=$(git log -1 --pretty=%s | awk '{print $1}')
-        reg=$(echo << parameters.target-list >> | sed -e 's/ //'  -e 's/,/|/')
+        reg=$(echo << parameters.target-list >> | sed -e 's/ //g'  -e 's/,/|/g')
         match=$(echo "${commit_subject}" | sed -rn "/.*\[${reg}\].*/p")
         echo ${match}
         if << parameters.stop-no-target >> && [ -z "${match}" ]; then
