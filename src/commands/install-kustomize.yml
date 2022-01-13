@@ -2,6 +2,13 @@ description: >
   Install kustomize for your job.
 # What will this command do?
 # Descriptions should be short, simple, and clear.
+
+parameters:
+  version:
+    type: string
+    description: "ex. v4.4.1"
+    default: "latest"
+
 steps:
   - run:
       name: install kustomize
@@ -9,8 +16,11 @@ steps:
       command: |
         if [ -f "kustomize" ]; then
           echo "kustomize already installed"
-        else
+        elif [ << parameters.version >> = "latest" ]; then
           curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | sudo bash
+        else
+          _version=$(echo << parameters.version >> | sed -e "s/v//g")
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | sudo bash -s ${_version}
         fi
   - run:
       name: confirm
