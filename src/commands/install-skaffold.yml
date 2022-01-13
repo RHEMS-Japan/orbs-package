@@ -2,12 +2,20 @@ description: >
   Install skaffold for your job.
 # What will this command do?
 # Descriptions should be short, simple, and clear.
+
+parameters:
+  version:
+    type: string
+    description: "ex. v1.35.1"
+    default: "latest"
+
 steps:
   - run:
       name: install skaffold
       command: |
-        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64 && \
-        sudo install skaffold /bin/
+        curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/<< parameters.version >>/skaffold-linux-amd64 && \
+        chmod +x skaffold && \
+        sudo mv skaffold /usr/local/bin
   - run:
       name: confirm
       command: skaffold version
