@@ -31,3 +31,4 @@ display:
 # If your orb requires other orbs, you can import them like this. Otherwise remove the "orbs" stanza.
 orbs:
   gcp-cli: circleci/gcp-cli@2.4.0
+  official-slack: circleci/slack@4.5.3
