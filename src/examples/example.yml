@@ -14,6 +14,10 @@ description: >
   https://circleci.com/developer/orbs/orb/rhems-japan/workflow
 
   https://circleci.com/developer/orbs/orb/rhems-japan/badges
+
+  https://circleci.com/developer/ja/orbs/orb/rhems-japan/chatwork
+
+  https://circleci.com/developer/ja/orbs/orb/rhems-japan/slack
 # Provide a use-case based example for using this orb.
 # Everything in the `usage` section will be displayed in the orb registry.
 # Comments are not retained.

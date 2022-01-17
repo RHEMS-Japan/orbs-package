@@ -16,6 +16,10 @@ description: >
   rhems-japan/workflow: 0.0.10
 
   rhems-japan/badges: 0.0.6
+
+  rhems-japan/chatwork: 0.0.3
+
+  rhems-japan/slack: 0.0.0
 # What will your orb allow users to accomplish?
 # Descriptions should be short, simple, and informative.
 
