@@ -1,0 +1,123 @@
+description: >
+  Notify a Slack channel with a custom message.
+parameters:
+  mentions:
+    type: string
+    default: ''
+    description: >
+      Mention users via the @ symbol: "@USER"
+
+      If the username contains a space, the Slack ID must be used with angled
+      brackets: "<@U8XXXXXXX>"
+  title:
+    type: string
+    description: "Title of the notification message"
+  image-url:
+    type: string
+    default: ''
+    description: "Image to be attached to the notification message"
+steps:
+  - run: echo "export GIT_COMMIT_MSG=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
+  - when:
+      condition: << parameters.mentions >>
+      steps:
+        - run: echo "export MENTIONS=<< parameters.mentions >>" >> $BASH_ENV
+  - when:
+      condition: << parameters.image-url >>
+      steps:
+        - official-slack/notify:
+            event: always
+            mentions: << parameters.mentions >>
+            custom: |
+              {
+                "blocks": [
+                  {
+                    "type": "header",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "<< parameters.title >>",
+                      "emoji": true
+                    }
+                  },
+                  {
+                    "type": "divider"
+                  },
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${MENTIONS}\n*Branch / Tag:*\t${CIRCLE_BRANCH}${CIRCLE_TAG}"
+                    },
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Repo:*\t\n${CIRCLE_PROJECT_REPONAME}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Message:*\t\n${GIT_COMMIT_MSG}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Commit:*\t\n${CIRCLE_SHA1:0:7}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Author:*\t\n${CIRCLE_USERNAME}"
+                      }
+                    ],
+                    "accessory": {
+                      "type": "image",
+                      "image_url": "<< parameters.image-url >>",
+                      "alt_text": "thumbnail"
+                    }
+                  }
+                ]
+              }
+  - unless:
+      condition: << parameters.image-url >>
+      steps:
+        - official-slack/notify:
+            event: always
+            mentions: << parameters.mentions >>
+            custom: |
+              {
+                "blocks": [
+                  {
+                    "type": "header",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "UPDATE AGONES DONE :rocket:",
+                      "emoji": true
+                    }
+                  },
+                  {
+                    "type": "divider"
+                  },
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${MENTIONS}\n*Branch / Tag *\t\n${CIRCLE_BRANCH}${CIRCLE_TAG}"
+                    },
+                    "fields": [
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Repo*\t\n${CIRCLE_PROJECT_REPONAME}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Message*\t\n${GIT_COMMIT_MSG}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Commit*\t\n${CIRCLE_SHA1:0:7}"
+                      },
+                      {
+                        "type": "mrkdwn",
+                        "text": "*Author*\t\n${CIRCLE_USERNAME}"
+                      }
+                    ]
+                  }
+                ]
+              }

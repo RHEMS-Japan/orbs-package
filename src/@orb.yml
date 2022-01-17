@@ -3,7 +3,7 @@ version: 2.1
 description: >
   This is an orb package maintained by RHEMS Japan.
 
-  rhems-japan/k8s-tools: 0.0.5
+  rhems-japan/k8s-tools: 0.0.6
 
   rhems-japan/cisync: 0.0.7
 
@@ -19,7 +19,7 @@ description: >
 
   rhems-japan/chatwork: 0.0.3
 
-  rhems-japan/slack: 0.0.0
+  rhems-japan/slack: 0.0.2
 # What will your orb allow users to accomplish?
 # Descriptions should be short, simple, and informative.
 
