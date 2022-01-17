@@ -1,0 +1,83 @@
+description: >
+  Notify the Slack channel that the job was successful.
+parameters:
+  mentions:
+    type: string
+    default: ''
+    description: >
+      Mention users via the @ symbol: "@USER"
+
+      If the username contains a space, the Slack ID must be used with angled
+      brackets: "<@U8XXXXXXX>"
+steps:
+  - run: echo "export GIT_COMMIT_MSG=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
+  - when:
+      condition: << parameters.mentions >>
+      steps:
+        - run: echo "export MENTIONS=<< parameters.mentions >>" >> $BASH_ENV
+  - official-slack/notify:
+      event: pass
+      mentions: << parameters.mentions >>
+      custom: |
+        {
+          "blocks": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "Job succeed :tada:",
+                "emoji": true
+              }
+            },
+            {
+              "type": "divider"
+            },
+            {
+              "type": "section",
+              "fields": [
+                {
+                  "type": "mrkdwn",
+                  "text": "${MENTIONS}\n*Job name:*\t${CIRCLE_JOB}"
+                }
+              ],
+              "accessory": {
+                "type": "button",
+                "text": {
+                  "type": "plain_text",
+                  "text": "View Job"
+                },
+                "url": "${CIRCLE_BUILD_URL}"
+              }
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Branch / Tag:*\t${CIRCLE_BRANCH}${CIRCLE_TAG}"
+                }
+              ]
+            },
+            {
+              "type": "context",
+              "elements": [
+                {
+                  "type": "mrkdwn",
+                  "text": "*Repo:*\t\n${CIRCLE_PROJECT_REPONAME}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Message:*\t\n${GIT_COMMIT_MSG}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Commit:*\t\n${CIRCLE_SHA1:0:7}"
+                },
+                {
+                  "type": "mrkdwn",
+                  "text": "*Author:*\t\n${CIRCLE_USERNAME}"
+                }
+              ]
+            }
+          ]
+        }
