@@ -52,6 +52,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "[skip ci]"
+        commit_options: '--allow-empty'
         branch: refs/heads/alpha
 
     - name: Git push
@@ -88,6 +89,7 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: "[semver:patch]"
+        commit_options: '--allow-empty'
         branch: refs/heads/master
 
     - name: Git push
