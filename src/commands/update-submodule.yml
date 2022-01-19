@@ -32,12 +32,14 @@ steps:
   - run:
       name: check branch name
       command: |
-        _branch=$(eval echo << parameters.master-branch >>)
-        if [ -z ${_branch} ]; then
-          echo "Specify the branch name to push with parameters: master-branch."
-          exit 1
+        if [ -z ${CIRCLE_BRANCH} ]; then
+          _branch=$(eval echo << parameters.master-branch >>)
+          if [ -z ${_branch} ]; then
+            echo "Specify the branch name to push with parameters: master-branch."
+            exit 1
+          fi
+          echo "export CIRCLE_BRANCH=${_branch}" >> $BASH_ENV
         fi
-        echo "export CIRCLE_BRANCH=${_branch}" >> $BASH_ENV
   - run:
       name: update submodule
       command: |
