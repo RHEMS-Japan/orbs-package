@@ -12,10 +12,10 @@ parameters:
   master-branch:
     type: string
     default: "$CIRCLE_BRANCH"
-    description: ""
+    description: "Branch name to push the latest submodule to. If you use this command with the tag filter, you must specify it."
   master-fingerprint:
     type: string
-    description: "fingerprint with write access to push changes in the submodule to the repository."
+    description: "Fingerprint with write access to push changes in the submodule to the repository."
   commit-message:
     type: string
     default: "[skip ci] update submodule"
