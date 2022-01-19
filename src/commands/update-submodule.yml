@@ -45,7 +45,7 @@ steps:
       command: |
         if [ -n << parameters.module-name >> ]; then
           module_name=$(eval echo << parameters.module-name >>)
-          commit_message=$(echo << parameters.commit-message >>)
+          commit_message="$(eval echo << parameters.commit-message >>): ${module_name}"
 
           _key=$(echo << parameters.submodule-fingerprint >> | sed -e 's/://g')
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
