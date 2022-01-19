@@ -52,7 +52,6 @@ steps:
           git config --global user.email "submodule.updater@rhems-japan.co.jp"
           git config --global user.name "submodule-updater"
 
-          git submodule foreach git pull
           git submodule update --init --remote --recursive << parameters.module-name >>
           git status
 
