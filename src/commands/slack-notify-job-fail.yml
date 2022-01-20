@@ -22,15 +22,9 @@ steps:
         {
           "blocks": [
             {
-              "type": "header",
-              "text": {
-                "type": "plain_text",
-                "text": "Job failed :interrobang:",
-                "emoji": true
-              }
-            },
-            {
-              "type": "divider"
+              "type": "image",
+              "image_url": "https://storage.googleapis.com/rhems-slack-images/Failed.png?fdsa",
+              "alt_text": "Job failed"
             },
             {
               "type": "section",

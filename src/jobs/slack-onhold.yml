@@ -36,15 +36,9 @@ steps:
               {
                 "blocks": [
                   {
-                    "type": "header",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "ON HOLD - Awaiting Approval :raised_hand:",
-                      "emoji": true
-                    }
-                  },
-                  {
-                    "type": "divider"
+                    "type": "image",
+                    "image_url": "https://storage.googleapis.com/rhems-slack-images/Onhold.png?fdas",
+                    "alt_text": "On hold"
                   },
                   {
                     "type": "section",
@@ -101,15 +95,9 @@ steps:
               {
                 "blocks": [
                   {
-                    "type": "header",
-                    "text": {
-                      "type": "plain_text",
-                      "text": "ON HOLD - Awaiting Approval :raised_hand:",
-                      "emoji": true
-                    }
-                  },
-                  {
-                    "type": "divider"
+                    "type": "image",
+                    "image_url": "https://storage.googleapis.com/rhems-slack-images/Onhold.png?fdas",
+                    "alt_text": "On hold"
                   },
                   {
                     "type": "section",

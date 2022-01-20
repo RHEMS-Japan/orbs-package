@@ -22,15 +22,9 @@ steps:
         {
           "blocks": [
             {
-              "type": "header",
-              "text": {
-                "type": "plain_text",
-                "text": "Job succeed :tada:",
-                "emoji": true
-              }
-            },
-            {
-              "type": "divider"
+              "type": "image",
+              "image_url": "https://storage.googleapis.com/rhems-slack-images/Success.png?fdas",
+              "alt_text": "Job succeed"
             },
             {
               "type": "section",
