@@ -1,0 +1,37 @@
+description: >
+  Allows the stock kubectl client to work with Tencent Kubernetes Engine.
+  Installs the TCCLI and updates the kubectl configuration.
+parameters:
+  install-kubectl:
+    type: boolean
+    default: false
+    description: Whether to install kubectl
+  install-tccli:
+    type: boolean
+    default: true
+    description: Whether to install tccli
+  cluster-id:
+    type: string
+    description: The id of the cluster for which to create a kubeconfig entry.
+steps:
+  - jq/install
+  - when:
+      condition: << parameters.install-kubectl >>
+      steps:
+        - kubernetes/install
+  - when:
+      condition: << parameters.install-tccli >>
+      steps:
+        - setup-tccli
+  - run:
+      name: setup $HOME/.kube/config
+      command: |
+        if [ ! -d $HOME/.kube ]; then
+          mkdir $HOME/.kube
+        fi
+        cd $HOME/.kube
+
+        tccli tke DescribeClusterKubeconfig --ClusterId << parameters.cluster-id >> > tke-config.json
+        echo -e "$(cat tke-config.json | jq '.Kubeconfig' | sed -e 's/\\"/"/g'  -e 's/"//')" | head -n -1 > config
+
+        kubectl config use-context $(kubectl config get-contexts | awk '{print $2}' | sed -n 2P)
