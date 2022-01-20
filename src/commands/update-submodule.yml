@@ -9,9 +9,13 @@ parameters:
   submodule-fingerprint:
     type: string
     description: "Fingerprint with read access to the submodule repository to be updated."
+  master-branch:
+    type: string
+    default: "$CIRCLE_BRANCH"
+    description: "Branch name to push the latest submodule to. If you use this command with the tag filter, you must specify it."
   master-fingerprint:
     type: string
-    description: "fingerprint with write access to push changes in the submodule to the repository."
+    description: "Fingerprint with write access to push changes in the submodule to the repository."
   commit-message:
     type: string
     default: "[skip ci] update submodule"
@@ -26,18 +30,32 @@ steps:
         - << parameters.submodule-fingerprint >>
         - << parameters.master-fingerprint >>
   - run:
+      name: check branch name
+      command: |
+        if [ -z ${CIRCLE_BRANCH} ]; then
+          _branch=$(eval echo << parameters.master-branch >>)
+          if [ -z ${_branch} ]; then
+            echo "Specify the branch name to push with parameters: master-branch."
+            exit 1
+          fi
+          echo "export CIRCLE_BRANCH=${_branch}" >> $BASH_ENV
+        fi
+  - run:
       name: update submodule
       command: |
         if [ -n << parameters.module-name >> ]; then
           module_name=$(eval echo << parameters.module-name >>)
-          commit_message=$(echo << parameters.commit-message >>)
+          commit_message="$(eval echo << parameters.commit-message >>): ${module_name}"
 
           _key=$(echo << parameters.submodule-fingerprint >> | sed -e 's/://g')
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
           git config --global user.email "submodule.updater@rhems-japan.co.jp"
           git config --global user.name "submodule-updater"
+
           git submodule update --init --remote --recursive << parameters.module-name >>
           git status
+
+          git checkout ${CIRCLE_BRANCH}
 
           _key=$(echo << parameters.master-fingerprint >> | sed -e 's/://g')
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
