@@ -19,9 +19,9 @@ description: >
 
   rhems-japan/chatwork: 0.0.3
 
-  rhems-japan/slack: 0.0.2
+  rhems-japan/slack: 0.0.3
 
-  rhems-japan/tc-cli: 0.0.0
+  rhems-japan/tc-cli: 0.0.1
 # What will your orb allow users to accomplish?
 # Descriptions should be short, simple, and informative.
 
