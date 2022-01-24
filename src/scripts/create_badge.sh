@@ -1,5 +1,4 @@
-TIME=$(date '+%Y/%m/%d %H:%M:%S')
-
+TIME=$(date '+%Y-%m-%d-%H-%M-%S')
 
 . "/tmp/RHEMS_JOB_STATUS"
 
@@ -12,7 +11,6 @@ ${STATUS} || STATUS=false
 [ "${BRANCH::1}" == '$' ] && BRANCH=`eval echo ${BRANCH}`
 [ "${TEXT::1}" == '$' ] && TEXT=`eval echo ${TEXT}`
 [ "${APP::1}" == '$' ] && APP=`eval echo ${APP}`
-
 
 ########### debug
 check_debug () {
@@ -43,7 +41,7 @@ echo "--- debug ---"
 
 post_to_badgeserver () {
 echo "--- main ---"
-HTTP_RESPONSE=$(curl -o /dev/null --silent --write-out '%{http_code}\n' -X POST -H "Content-Type: application/json" \
+RESPONSE=$(curl -w '%{http_code}\n' -X POST -H "Content-Type: application/json" \
 https://badges.rhems-japan.com/api-update-badge \
 -d @- <<EOS
 {
@@ -65,13 +63,15 @@ EOF`
 }
 EOS
 )
-echo "HTTP_RESPONSE=${HTTP_RESPONSE} - ${STATUS}"
-echo "--- main ---"
-# Responses other than 200 end with an error.
 
+URL=$(echo $RESPONSE | cut -d' ' -f1)
+HTTP_RESPONSE=$(echo $RESPONSE | rev | cut -d' ' -f1 | rev)
+echo http_code=$HTTP_RESPONSE
 if [ ${HTTP_RESPONSE} -ne '200' ]; then
-  echo 'not 200'
+  # Responses other than 200 end with an error.
   exit 1
+else
+  echo -e $URL
 fi
 }
 
