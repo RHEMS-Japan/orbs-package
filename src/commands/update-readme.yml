@@ -1,6 +1,5 @@
 description: >
   Generate badges from the services of RHEMS BADGES.
-  【We plan to remove update_readme and leave update-readme.】
 
 parameters:
   update_readme:

@@ -1,6 +1,5 @@
 description: >
   Generate badges from the services of RHEMS BADGES.
-  【We plan to remove create_badge and leave create-badge.】
 
 parameters:
   api_token:
