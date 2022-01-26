@@ -45,6 +45,7 @@ parameters:
     default: latest
     description: Docker image tags (default = latest)
 steps:
+  - checkout
   - tcr-login:
       tc-secret-id: << parameters.tc-secret-id >>
       tc-secret-key: << parameters.tc-secret-key >>
