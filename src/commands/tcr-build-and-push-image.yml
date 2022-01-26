@@ -34,7 +34,8 @@ parameters:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
   namespace:
-    type: string
+    type: env_var_name
+    default: "TCR_NAMESPACE"
     description: Namespace of Tencent Container Registry.
   image:
     type: string
