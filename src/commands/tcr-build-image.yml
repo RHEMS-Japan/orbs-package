@@ -34,7 +34,8 @@ parameters:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
   namespace:
-    type: string
+    type: env_var_name
+    default: "TCR_NAMESPACE"
     description: Namespace of Tencent Container Registry.
   image:
     type: string
@@ -54,9 +55,10 @@ steps:
       name: docker build
       command: |
         TCR_ACCESS_DOMAIN=$(eval echo "\$<< parameters.access-domain >>")
+        TCR_NAMESPACE=$(eval echo "\$<< parameters.namespace >>")
 
         docker build \
           <<#parameters.extra-build-args>><<parameters.extra-build-args>><</parameters.extra-build-args>> \
           -f << parameters.path >>/<< parameters.dockerfile >> \
-          -t ${TCR_ACCESS_DOMAIN}/<< parameters.namespace >>/<< parameters.image >>:<< parameters.tag >> \
+          -t ${TCR_ACCESS_DOMAIN}/${TCR_NAMESPACE}/<< parameters.image >>:<< parameters.tag >> \
           << parameters.path >>
