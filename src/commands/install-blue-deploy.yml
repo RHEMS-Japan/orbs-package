@@ -4,6 +4,14 @@ description: >
 # Descriptions should be short, simple, and clear.
 steps:
   - run:
+      name: install sudo
+      command: |
+        if which sudo; then
+          echo "Already installed."
+        else
+          apt-get update && apt-get install -y sudo
+        fi
+  - run:
       name: install blue-deploy
       command: curl -L https://dl-deploy.freaker.io/install-deploy.sh | sudo bash
   - run:
