@@ -9,8 +9,25 @@ parameters:
 
       If the username contains a space, the Slack ID must be used with angled
       brackets: "<@U8XXXXXXX>"
+  access-token:
+    type: string
+    default: $SLACK_ACCESS_TOKEN
+    description: Access token for slack API.
+  channel:
+    type: string
+    default: $SLACK_DEFAULT_CHANNEL
+    description: >
+      Select which channel in which to post to. Channel name or ID will work.
+      You may include a comma separated list of channels if you wish to post to
+      multiple channels at once. Set the "SLACK_DEFAULT_CHANNEL" environment
+      variable for the default channel.
 steps:
-  - run: echo "export GIT_COMMIT_MSG=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
+  - checkout
+  - run:
+      name: set env
+      command: |
+        echo "export GIT_COMMIT_MSG=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
+        echo "export SLACK_ACCESS_TOKEN=$(eval echo << parameters.access-token >>)" >> $BASH_ENV
   - when:
       condition: << parameters.mentions >>
       steps:
@@ -18,6 +35,7 @@ steps:
   - official-slack/notify:
       event: fail
       mentions: << parameters.mentions >>
+      channel: << parameters.channel >>
       custom: |
         {
           "blocks": [
