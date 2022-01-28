@@ -1,5 +1,6 @@
 update_readme () {
   echo "== run update_readme =="
+  echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   [ "${BRANCH::1}" == '$' ] && BRANCH=`eval echo ${BRANCH}`
   if [ -n "${BRANCH}" ]; then
     git config --global user.email ${GIT_USER_EMAIL}
