@@ -77,8 +77,9 @@ fi
 
 ################## ---- main
 check_debug
-if [ ! -n "${TEXT}" ]; then
-   post_to_badgeserver
-else
-  ${STATUS} && post_to_badgeserver
-fi
+post_to_badgeserver
+# if [ ! -n "${TEXT}" ]; then
+#    post_to_badgeserver
+# else
+#   ${STATUS} && post_to_badgeserver
+# fi
