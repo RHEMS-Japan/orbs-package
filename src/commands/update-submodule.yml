@@ -58,7 +58,7 @@ steps:
           git checkout ${CIRCLE_BRANCH}
           _key=$(echo << parameters.master-fingerprint >> | sed -e 's/://g')
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
-
+          git pull
           git commit -a -m "${commit_message}" || true
           git push -u origin ${CIRCLE_BRANCH}
         else
