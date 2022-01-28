@@ -56,7 +56,8 @@ steps:
           git status
 
           git checkout ${CIRCLE_BRANCH}
-
+          git fetch
+          git merge origin/${CIRCLE_BRANCH}
           _key=$(echo << parameters.master-fingerprint >> | sed -e 's/://g')
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
 
