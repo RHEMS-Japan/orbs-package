@@ -25,10 +25,7 @@ steps:
   - run:
       name: confirm
       command: echo << parameters.module-name >>
-  - add_ssh_keys:
-      fingerprints:
-        - << parameters.submodule-fingerprint >>
-        - << parameters.master-fingerprint >>
+  - add_ssh_keys
   - run:
       name: check branch name
       command: |
