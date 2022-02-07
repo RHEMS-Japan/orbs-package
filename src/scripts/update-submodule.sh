@@ -11,23 +11,17 @@ if [ -n ${MODULE_NAME} ]; then
   git config --global user.email "submodule.updater@rhems-japan.co.jp"
   git config --global user.name "submodule-updater"
 
-  # .gitmodulesが存在したら
   if [ -e ".gitmodules" ]; then
     echo -e "already exists .gitmodule\n"
-    # pathsにpathを全て取り込む
     paths=$(echo $(grep "path=*" .gitmodules | awk '{print $3}' ))
-    # 指定のモジュール名が存在するか
     if [[ $paths =~ $module_name ]]; then
-      # 指定のモジュール名のpathが何行目か
       N=$(grep -n "path = $module_name" .gitmodules | sed -e 's/:.*//g')
-      # 指定のモジュールのブランチ名の取得
       branch_name=$(awk "NR==$N+2" .gitmodules | awk '{print $3}')
       echo $branch_name
     else
       echo -e "no setting in .gitmodule\n"
       git submodule add --quiet --force -b ${CIRCLE_BRANCH} ${submodule_url}
     fi
-  # .gitmodulesが存在しなかったら
   else
     echo -e "no exists .gitmodule\n"
     git submodule add --quiet --force -b ${CIRCLE_BRANCH} ${submodule_url}
