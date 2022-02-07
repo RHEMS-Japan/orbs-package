@@ -12,7 +12,7 @@ if [ -n ${MODULE_NAME} ]; then
     commit_message="${commit_message}: ${module_name}"
   fi
 
-  _key=$(echo ${SUBM_FINGER_PRINT} | sed -e 's/://g')
+  _key=$(eval echo ${SUBM_FINGER_PRINT} | sed -e 's/://g')
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
   git config --global user.email "submodule.updater@rhems-japan.co.jp"
   git config --global user.name "submodule-updater"
@@ -28,7 +28,7 @@ if [ -n ${MODULE_NAME} ]; then
   git status
 
   git checkout ${CIRCLE_BRANCH}
-  _key=$(echo ${MASTER_FINGER_PRINT} | sed -e 's/://g')
+  _key=$(eval echo ${MASTER_FINGER_PRINT} | sed -e 's/://g')
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
   git branch --set-upstream-to=origin/${CIRCLE_BRANCH} ${CIRCLE_BRANCH}
   git pull
