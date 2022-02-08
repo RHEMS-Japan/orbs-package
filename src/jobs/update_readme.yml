@@ -37,10 +37,11 @@ steps:
   - add_ssh_keys:
       fingerprints:
         - << parameters.fingerprint >>
-  - update_readme:
+  - update-readme:
       user_name: << parameters.user_name >>
       user_email: << parameters.user_email >>
       file_path: << parameters.file_path >>
       update_readme: << parameters.update_readme >>
       only_date: << parameters.only_date >>
       branch: << parameters.branch >>
+      fingerprint: << parameters.fingerprint >>

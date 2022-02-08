@@ -7,6 +7,8 @@ update_readme () {
     git config --global user.email ${GIT_USER_EMAIL}
     git config --global user.name "${GIT_USER_NAME}"
     git checkout ${CIRCLE_BRANCH}
+    _key=$(eval echo ${FINGER_PRINT} | sed -e 's/://g')
+    export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
     git branch --set-upstream-to=origin/${CIRCLE_BRANCH} ${CIRCLE_BRANCH}
     git pull
 

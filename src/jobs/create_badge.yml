@@ -42,7 +42,7 @@ parameters:
     description: "write text for right side (optional)"
 
 steps:
-  - create_badge:
+  - create-badge:
       api_token: << parameters.api_token >>
       organization: << parameters.organization >>
       repo: << parameters.repo >>
