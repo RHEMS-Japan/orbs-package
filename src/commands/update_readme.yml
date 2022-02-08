@@ -27,6 +27,9 @@ parameters:
     type: string
     default: "badges@rhems-japan.co.jp"
     description: "GitHub user.email"
+  fingerprint:
+    type: string
+    description: "[required] Fingerprint with write access to push ReadMe changes to the repository."
 
 steps:
   - run:
@@ -39,4 +42,5 @@ steps:
         UPDATE_README: << parameters.update_readme >>
         ONLY_DATE: << parameters.only_date >>
         BRANCH: << parameters.branch >>
+        FINGER_PRINT: << parameters.fingerprint >>
       command: << include(scripts/update_readme.sh) >>
