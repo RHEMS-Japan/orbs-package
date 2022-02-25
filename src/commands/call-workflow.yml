@@ -9,6 +9,10 @@ parameters:
   repo:
     type: string
     description: "Your GitHub repository name."
+  branch:
+    type: string
+    default: $CIRCLE_BRANCH
+    description: "The branch name of the workflow to trigger."
   token:
     type: env_var_name
     default: CIRCLE_API_TOKEN
@@ -24,8 +28,10 @@ steps:
   - run:
       name: set params
       command: |
+        branch=$(eval echo "<< parameters.branch >>")
         param=$(eval echo $PARAM_MAP)
-        json='{\"branch\": \"$CIRCLE_BRANCH\", \"parameters\": $param}'
+
+        json='{\"branch\": \"$branch\", \"parameters\": $param}'
         eval echo $json > pipelineparams.json
         cat pipelineparams.json
       environment:
@@ -34,6 +40,7 @@ steps:
       name: trigger workflow
       command: |
         token=$(eval echo "$<< parameters.token >>")
+
         curl --request POST \
         --url https://circleci.com/api/v2/project/github/<< parameters.org-or-user >>/<< parameters.repo >>/pipeline \
         --header "Circle-Token: ${token}" \
