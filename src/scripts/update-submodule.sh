@@ -7,6 +7,7 @@ function check() {
   if [ $? -ne 0 ]; then
     for i in {2..10}; do
       echo -e "\n<< Retry $i >>\n"
+      sleep 1
       pull-push
       if [ $? -eq 0 ]; then
         break
@@ -33,7 +34,6 @@ if [ -n ${MODULE_NAME} ]; then
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
   git config --global user.email "submodule.updater@rhems-japan.co.jp"
   git config --global user.name "submodule-updater"
-  git checkout ${CIRCLE_BRANCH}
 
   if [ -e ".gitmodules" ]; then
     echo -e "already exists .gitmodule\n"
@@ -51,6 +51,7 @@ if [ -n ${MODULE_NAME} ]; then
     git submodule add --quiet --force -b ${CIRCLE_BRANCH} ${submodule_url}
   fi
 
+  git checkout ${CIRCLE_BRANCH}
   git submodule sync
   git submodule update --init --remote --recursive ${module_name}
   git status
