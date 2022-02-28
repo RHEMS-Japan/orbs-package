@@ -33,6 +33,7 @@ if [ -n ${MODULE_NAME} ]; then
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
   git config --global user.email "submodule.updater@rhems-japan.co.jp"
   git config --global user.name "submodule-updater"
+  git checkout ${CIRCLE_BRANCH}
 
   if [ -e ".gitmodules" ]; then
     echo -e "already exists .gitmodule\n"
@@ -54,7 +55,6 @@ if [ -n ${MODULE_NAME} ]; then
   git submodule update --init --remote --recursive ${module_name}
   git status
 
-  git checkout ${CIRCLE_BRANCH}
   _key=$(eval echo ${MASTER_FINGER_PRINT} | sed -e 's/://g')
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
   git branch --set-upstream-to=origin/${CIRCLE_BRANCH} ${CIRCLE_BRANCH}
