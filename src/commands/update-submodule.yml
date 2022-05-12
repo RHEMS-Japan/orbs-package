@@ -3,6 +3,10 @@ description: >
 # What will this command do?
 # Descriptions should be short, simple, and clear.
 parameters:
+  organization-name:
+    type: string
+    description: "Submodule organization name."
+    default: ""
   module-name:
     type: string
     description: "Submodule name to be updated."
@@ -24,7 +28,9 @@ parameters:
 steps:
   - run:
       name: confirm
-      command: echo << parameters.module-name >>
+      command: |
+        echo << parameters.organization-name >>
+        echo << parameters.module-name >>
   - add_ssh_keys
   - run:
       name: check branch name
@@ -40,6 +46,7 @@ steps:
   - run:
       name: update submodule
       environment:
+        ORGANIZATION_NAME: << parameters.organization-name >>
         MODULE_NAME: << parameters.module-name >>
         COMMIT_MESSAGE: << parameters.commit-message >>
         MASTER_FINGER_PRINT: << parameters.master-fingerprint >>
