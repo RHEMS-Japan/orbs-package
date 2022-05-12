@@ -21,6 +21,10 @@ jobs:
         echo "REPO_NAME=`echo ${{ github.event.action }}`" >> $GITHUB_ENV
         echo "ACCESS_TOKEN=`echo ${{ steps.generate_token.outputs.token }}`" >> $GITHUB_ENV
 
+    - name: safe directory
+      run: |
+        git config --global --add safe.directory /github/workspace
+
     # alpha
     - name: Git checkout
       uses: actions/checkout@v2
@@ -59,16 +63,11 @@ jobs:
         commit_options: '--allow-empty'
         branch: refs/heads/alpha
 
-    - name: safe directory
-      run: |
-        git config --global --add safe.directory /github/workspace
-
     - name: Git push
       uses: ad-m/github-push-action@v0.5.0
       with:
         branch: refs/heads/alpha
         github_token: ${{ secrets.GITHUB_TOKEN }}
-
 
     # master
     - name: Git checkout
