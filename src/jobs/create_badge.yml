@@ -40,6 +40,10 @@ parameters:
     type: string
     default: ""
     description: "write text for right side (optional)"
+  is_error_text:
+    type: string
+    default: ""
+    description: "There is a text specification, and the text specified at the time of error is used. (optional)"
 
 steps:
   - create-badge:
@@ -51,3 +55,4 @@ steps:
       status: << parameters.status >>
       color: << parameters.color >>
       text: << parameters.text >>
+      is_error_text: << parameters.is_error_text >>
