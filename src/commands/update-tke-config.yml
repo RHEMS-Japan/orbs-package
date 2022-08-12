@@ -5,11 +5,11 @@ parameters:
   install-kubectl:
     type: boolean
     default: false
-    description: Whether to install kubectl
+    description: Whether to install kubectl.
   install-tccli:
     type: boolean
     default: true
-    description: Whether to install tccli
+    description: Whether to install tccli.
   cluster-id:
     type: string
     description: The id of the cluster for which to create a kubeconfig entry.
