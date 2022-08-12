@@ -31,7 +31,7 @@ steps:
         fi
         cd $HOME/.kube
 
-        tccli tke DescribeClusterKubeconfig --ClusterId << parameters.cluster-id >> > tke-config.json
+        tccli tke DescribeClusterKubeconfig --ClusterId << parameters.cluster-id >> --IsExtranet True > tke-config.json
         echo -e "$(cat tke-config.json | jq '.Kubeconfig' | sed -e 's/\\"/"/g'  -e 's/"//')" | head -n -1 > config
 
         kubectl config use-context $(kubectl config get-contexts | awk '{print $2}' | sed -n 2P)
