@@ -16,7 +16,7 @@ Cisync() {
         # ignore
         for _ignore in ${MERGE_TO_IGNORE}; do
             _merge_to=${_merge_to//${_ignore} /}
-            _merge_to=${_merge_to// ${_ignore}/}
+            _merge_to=$(echo "${_merge_to}" | sed -e "s# ${_ignore}\$##")
         done
     fi
 
