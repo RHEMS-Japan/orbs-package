@@ -16,6 +16,10 @@ parameters:
     type: string
     default: "ALL"
     description: "Branch name to merge into. If not specified, all branches except merge-from will be used. You can select multiple branches by specifying them separated by spaces, such as 'hoge fuga'."
+  merge-to-ignore:
+    type: string
+    default: ""
+    description: "Branch name NOT to merge into. If not specified, no branch is to be ignored. You can select multiple branches by specifying them separated by spaces, such as 'hoge fuga'."
   user-name:
     type: string
     default: "cisync"
@@ -48,6 +52,7 @@ steps:
       environment:
         MERGE_FROM: << parameters.merge-from >>
         MERGE_TO: << parameters.merge-to >>
+        MERGE_TO_IGNORE: << parameters.merge-to-ignore >>
         USER_NAME: << parameters.user-name >>
         USER_EMAIL: << parameters.user-email >>
       name: cisync
