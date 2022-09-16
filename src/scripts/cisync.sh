@@ -7,6 +7,17 @@ Cisync() {
         done
         git fetch --all
         _merge_to=$(git for-each-ref --format="%(refname:short)" refs/heads/ | grep -v "^${_merge_from}$")
+
+        # ignore
+        for _ignore in ${MERGE_TO_IGNORE}; do
+            _merge_to=$(echo "${_merge_to}" | grep -v "^${_ignore}$" )
+        done
+    else
+        # ignore
+        for _ignore in ${MERGE_TO_IGNORE}; do
+            _merge_to=${_merge_to//${_ignore} /}
+            _merge_to=${_merge_to// ${_ignore}/}
+        done
     fi
 
     echo "===="
