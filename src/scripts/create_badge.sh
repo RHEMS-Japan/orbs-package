@@ -67,14 +67,14 @@ EOF`
 EOS
 )
 
-URL=$(echo $RESPONSE | cut -d' ' -f1)
-HTTP_RESPONSE=$(echo $RESPONSE | rev | cut -d' ' -f1 | rev)
+RESPONSE_JSON=$(echo $RESPONSE | awk -F "}" '{print $1}')"}"
+HTTP_RESPONSE=$(echo $RESPONSE | awk -F "}" '{print $2}')
 echo http_code=$HTTP_RESPONSE
 if [ ${HTTP_RESPONSE} -ne '200' ]; then
   # Responses other than 200 end with an error.
   exit 1
 else
-  echo -e $URL
+  echo -e $RESPONSE_JSON | jq
 fi
 }
 
