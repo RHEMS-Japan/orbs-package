@@ -25,6 +25,7 @@ Cisync() {
     echo "  to: ${_merge_to}"
     echo "===="
 
+    git checkout "${_merge_from}"
     cp -Rp .circleci ../
     git config --global user.name "${USER_NAME}"
     git config --global user.email "${USER_EMAIL}"
