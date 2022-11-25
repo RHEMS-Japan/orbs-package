@@ -2,25 +2,25 @@ description: >
   Configure TCCLI.
 parameters:
   tc-secret-id:
-    type: env_var_name
-    default: "TC_SECRET_ID"
+    type: string
+    default: $TC_SECRET_ID
     description: "TencentCloud API secretId."
   tc-secret-key:
-    type: env_var_name
-    default: "TC_SECRET_KEY"
+    type: string
+    default: $TC_SECRET_KEY
     description: "TencentCloud API secretKey."
   tc-region:
-    type: env_var_name
-    default: "TC_REGION"
+    type: string
+    default: $TC_REGION
     description: "TencentCloud region to operate in."
 steps:
   - install-tccli
   - run:
       name: setup tccli
       command: |
-        PARAM_TC_SECRET_ID=$(eval echo "\$<< parameters.tc-secret-id >>")
-        PARAM_TC_SECRET_KEY=$(eval echo "\$<< parameters.tc-secret-key >>")
-        PARAM_TC_REGION=$(eval echo "\$<< parameters.tc-region >>")
+        PARAM_TC_SECRET_ID=$(eval echo << parameters.tc-secret-id >>)
+        PARAM_TC_SECRET_KEY=$(eval echo << parameters.tc-secret-key >>)
+        PARAM_TC_REGION=$(eval echo << parameters.tc-region >>)
 
         tccli configure set secretId ${PARAM_TC_SECRET_ID}
         tccli configure set secretKey ${PARAM_TC_SECRET_KEY}

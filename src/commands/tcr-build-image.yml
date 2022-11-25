@@ -2,24 +2,24 @@ description: >
   Configure TCCLI.
 parameters:
   tc-secret-id:
-    type: env_var_name
-    default: "TC_SECRET_ID"
+    type: string
+    default: $TC_SECRET_ID
     description: "TencentCloud API secretId."
   tc-secret-key:
-    type: env_var_name
-    default: "TC_SECRET_KEY"
+    type: string
+    default: $TC_SECRET_KEY
     description: "TencentCloud API secretKey."
   tc-region:
-    type: env_var_name
-    default: "TC_REGION"
+    type: string
+    default: $TC_REGION
     description: "TencentCloud region to operate in."
   access-domain:
-    type: env_var_name
-    default: "TCR_ACCESS_DOMAIN"
+    type: string
+    default: $TCR_ACCESS_DOMAIN
     description: "Access Domain of Tencent Container Registry."
   registry-id:
-    type: env_var_name
-    default: "TCR_REGISTRY_ID"
+    type: string
+    default: $TCR_REGISTRY_ID
     description: "Instance ID of Tencent Container Registry."
   extra-build-args:
     type: string
@@ -34,8 +34,8 @@ parameters:
     default: Dockerfile
     description: Name of dockerfile to use. Defaults to Dockerfile.
   namespace:
-    type: env_var_name
-    default: "TCR_NAMESPACE"
+    type: string
+    default: $TCR_NAMESPACE
     description: Namespace of Tencent Container Registry.
   image:
     type: string
@@ -55,8 +55,8 @@ steps:
   - run:
       name: docker build
       command: |
-        TCR_ACCESS_DOMAIN=$(eval echo "\$<< parameters.access-domain >>")
-        TCR_NAMESPACE=$(eval echo "\$<< parameters.namespace >>")
+        TCR_ACCESS_DOMAIN=$(eval echo << parameters.access-domain >>)
+        TCR_NAMESPACE=$(eval echo << parameters.namespace >>)
 
         docker build \
           <<#parameters.extra-build-args>><<parameters.extra-build-args>><</parameters.extra-build-args>> \

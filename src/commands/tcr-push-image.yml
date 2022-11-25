@@ -2,12 +2,12 @@ description: >
   Configure TCCLI.
 parameters:
   access-domain:
-    type: env_var_name
-    default: "TCR_ACCESS_DOMAIN"
+    type: string
+    default: $TCR_ACCESS_DOMAIN
     description: "Access Domain of Tencent Container Registry."
   namespace:
-    type: env_var_name
-    default: "TCR_NAMESPACE"
+    type: string
+    default: $TCR_NAMESPACE
     description: Namespace of Tencent Container Registry.
   image:
     type: string
@@ -20,7 +20,7 @@ steps:
   - run:
       name: docker push
       command: |
-        TCR_ACCESS_DOMAIN=$(eval echo "\$<< parameters.access-domain >>")
-        TCR_NAMESPACE=$(eval echo "\$<< parameters.namespace >>")
+        TCR_ACCESS_DOMAIN=$(eval echo << parameters.access-domain >>)
+        TCR_NAMESPACE=$(eval echo << parameters.namespace >>)
 
         docker push ${TCR_ACCESS_DOMAIN}/${TCR_NAMESPACE}/<< parameters.image >>:<< parameters.tag >>

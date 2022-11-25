@@ -2,24 +2,24 @@ description: >
   Configure TCCLI.
 parameters:
   tc-secret-id:
-    type: env_var_name
-    default: "TC_SECRET_ID"
+    type: string
+    default: $TC_SECRET_ID
     description: "TencentCloud API secretId."
   tc-secret-key:
-    type: env_var_name
-    default: "TC_SECRET_KEY"
+    type: string
+    default: $TC_SECRET_KEY
     description: "TencentCloud API secretKey."
   tc-region:
-    type: env_var_name
-    default: "TC_REGION"
+    type: string
+    default: $TC_REGION
     description: "TencentCloud region to operate in."
   access-domain:
-    type: env_var_name
-    default: "TCR_ACCESS_DOMAIN"
+    type: string
+    default: $TCR_ACCESS_DOMAIN
     description: "Access Domain of Tencent Container Registry."
   registry-id:
-    type: env_var_name
-    default: "TCR_REGISTRY_ID"
+    type: string
+    default: $TCR_REGISTRY_ID
     description: "Instance ID of Tencent Container Registry."
 steps:
   - setup-tccli:
@@ -30,12 +30,12 @@ steps:
   - run:
       name: create temporary instance token
       command: |
-        TCR_REGISTRY_ID=$(eval echo "\$<< parameters.registry-id >>")
+        TCR_REGISTRY_ID=$(eval echo << parameters.registry-id >>)
         tccli tcr CreateInstanceToken --cli-unfold-argument --RegistryId ${TCR_REGISTRY_ID} --TokenType temp > token.json
   - run:
       name: docker login
       command: |
         username=$(cat token.json | jq -r ".Username")
         password=$(cat token.json | jq -r ".Token")
-        TCR_ACCESS_DOMAIN=$(eval echo "\$<< parameters.access-domain >>")
+        TCR_ACCESS_DOMAIN=$(eval echo << parameters.access-domain >>)
         docker login ${TCR_ACCESS_DOMAIN} --username ${username} --password ${password}
