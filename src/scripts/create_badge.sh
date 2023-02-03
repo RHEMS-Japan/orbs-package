@@ -10,6 +10,7 @@ ${STATUS} || STATUS=false
 [ "${REPO::1}" == '$' ] && REPO=`eval echo ${REPO}`
 [ "${BRANCH::1}" == '$' ] && BRANCH=`eval echo ${BRANCH}`
 [ "${TEXT::1}" == '$' ] && TEXT=`eval echo ${TEXT}`
+[ "${LOG::1}" == '$' ] && LOG=`eval echo ${LOG}`
 [ "${IS_ERROR_TEXT::1}" == '$' ] && IS_ERROR_TEXT=`eval echo ${IS_ERROR_TEXT}`
 [ "${APP::1}" == '$' ] && APP=`eval echo ${APP}`
 
@@ -26,6 +27,7 @@ cat << EOS
 "app": "${APP}",
 "branch": "${BRANCH}",
 "status": ${STATUS},
+"log": ${LOG},
 `[ -n "${TEXT}" ] && \
 cat << EOF
 "txt": "${TEXT}",
@@ -54,6 +56,7 @@ https://badges.rhems-japan.com/api-update-badge \
 "app": "${APP}",
 "branch": "${BRANCH}",
 "status": ${STATUS},
+"log": "${LOG}",
 `[ -n "${TEXT}" ] && \
 cat << EOF
 "txt": "${TEXT}",
