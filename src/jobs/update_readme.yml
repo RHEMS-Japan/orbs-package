@@ -34,9 +34,6 @@ parameters:
 
 steps:
   - checkout
-  - add_ssh_keys:
-      fingerprints:
-        - << parameters.fingerprint >>
   - update-readme:
       user_name: << parameters.user_name >>
       user_email: << parameters.user_email >>
