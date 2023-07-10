@@ -1,0 +1,7 @@
+---
+description: >
+  Stop Twingate
+steps:
+  - run:
+      name: Stop Twingate
+      command: <<include(scripts/stop.sh)>>
