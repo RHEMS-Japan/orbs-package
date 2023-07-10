@@ -1,3 +1,5 @@
+---
 description: >
-  This is a default executor.
-machine: true
+  ubuntu20.04
+machine:
+  image: ubuntu-2004:2023.04.2
