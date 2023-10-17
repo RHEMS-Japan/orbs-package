@@ -23,7 +23,8 @@ else
     pip3 --version
 fi
 
-pip3 install tccli
+# pip3 install tccli
+pip3 install tccli-intl-en
 
 echo "=== tccli version ==="
 tccli --version
