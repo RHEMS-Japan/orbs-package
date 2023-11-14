@@ -2,11 +2,11 @@ description: >
   Insert this job in-line with your standard CircleCI on-hold notification jobs
   to simulataniously send a Slack notification containing a link to the paused Workflow.
 docker:
-  - image: 'cimg/base:stable'
+  - image: "cimg/base:stable"
 parameters:
   mentions:
     type: string
-    default: ''
+    default: ""
     description: >
       Exports to the "$SLACK_PARAM_MENTIONS" environment variable for use in
       templates.
@@ -17,7 +17,7 @@ parameters:
       brackets: "<@U8XXXXXXX>"
   image-url:
     type: string
-    default: ''
+    default: ""
     description: "Image to be attached to the notification message"
   access-token:
     type: string
@@ -31,6 +31,9 @@ parameters:
       You may include a comma separated list of channels if you wish to post to
       multiple channels at once. Set the "SLACK_DEFAULT_CHANNEL" environment
       variable for the default channel.
+  branch-tag:
+    type: string
+    default: $CIRCLE_BRANCH$CIRCLE_TAG
   repo:
     type: string
     default: $CIRCLE_PROJECT_REPONAME
@@ -53,19 +56,21 @@ steps:
       name: set env
       command: |
         echo "export SLACK_ACCESS_TOKEN=$(eval echo << parameters.access-token >>)" >> $BASH_ENV
-        
+
+        echo "export BRANCH_TAG=$(eval echo << parameters.branch-tag >>)" >> $BASH_ENV
+
         echo "export REPO=$(eval echo << parameters.repo >>)" >> $BASH_ENV
 
         if [ -n "<< parameters.message >>" ]; then
-          echo "export MESSAGE=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
-        else
           echo "export MESSAGE=$(eval echo << parameters.message >>)" >> $BASH_ENV
+        else
+          echo "export MESSAGE=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
         fi
 
         if [ -n "<< parameters.commit >>" ]; then
-          echo "export COMMIT=${${CIRCLE_SHA1:0:7}}" >> $BASH_ENV
-        else
           echo "export COMMIT=$(eval echo << parameters.commit >>)" >> $BASH_ENV
+        else
+          echo "export COMMIT=${CIRCLE_SHA1:0:7}" >> $BASH_ENV
         fi
 
         echo "export AUTHOR=$(eval echo << parameters.author >>)" >> $BASH_ENV
@@ -92,7 +97,7 @@ steps:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "${MENTIONS}\n*Branch / Tag:*\t${CIRCLE_BRANCH}${CIRCLE_TAG}"
+                      "text": "${MENTIONS}\n*Branch / Tag:*\t${BRANCH_TAG}"
                     },
                     "fields": [
                       {
@@ -152,24 +157,24 @@ steps:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "${MENTIONS}\n*Branch / Tag:*\t${CIRCLE_BRANCH}${CIRCLE_TAG}"
+                      "text": "${MENTIONS}\n*Branch / Tag:*\t${BRANCH_TAG}"
                     },
                     "fields": [
                       {
                         "type": "mrkdwn",
-                        "text": "*Repo:*\t\n${CIRCLE_PROJECT_REPONAME}"
+                        "text": "*Repo:*\t\n${REPO}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Message:*\t\n${GIT_COMMIT_MSG}"
+                        "text": "*Message:*\t\n${MESSAGE}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Commit:*\t\n${CIRCLE_SHA1:0:7}"
+                        "text": "*Commit:*\t\n${COMMIT}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Author:*\t\n${CIRCLE_USERNAME}"
+                        "text": "*Author:*\t\n${AUTHOR}"
                       }
                     ]
                   },
