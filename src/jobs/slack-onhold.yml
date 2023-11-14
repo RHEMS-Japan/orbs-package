@@ -31,13 +31,44 @@ parameters:
       You may include a comma separated list of channels if you wish to post to
       multiple channels at once. Set the "SLACK_DEFAULT_CHANNEL" environment
       variable for the default channel.
+  repo:
+    type: string
+    default: $CIRCLE_PROJECT_REPONAME
+  message:
+    type: string
+    default: ""
+    description: >
+      For the default value, the commit message will be used.
+  commit:
+    type: string
+    default: ""
+    description: >
+      For the default value, the first 7 characters of the commit hash will be used.
+  author:
+    type: string
+    default: $CIRCLE_USERNAME
 steps:
   - checkout
   - run:
       name: set env
       command: |
-        echo "export GIT_COMMIT_MSG=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
         echo "export SLACK_ACCESS_TOKEN=$(eval echo << parameters.access-token >>)" >> $BASH_ENV
+        
+        echo "export REPO=$(eval echo << parameters.repo >>)" >> $BASH_ENV
+
+        if [ -n "<< parameters.message >>" ]; then
+          echo "export MESSAGE=\"`git --no-pager log -1 --pretty=format:'%s'`\"" >> $BASH_ENV
+        else
+          echo "export MESSAGE=$(eval echo << parameters.message >>)" >> $BASH_ENV
+        fi
+
+        if [ -n "<< parameters.commit >>" ]; then
+          echo "export COMMIT=${${CIRCLE_SHA1:0:7}}" >> $BASH_ENV
+        else
+          echo "export COMMIT=$(eval echo << parameters.commit >>)" >> $BASH_ENV
+        fi
+
+        echo "export AUTHOR=$(eval echo << parameters.author >>)" >> $BASH_ENV
   - when:
       condition: << parameters.mentions >>
       steps:
@@ -66,19 +97,19 @@ steps:
                     "fields": [
                       {
                         "type": "mrkdwn",
-                        "text": "*Repo:*\t\n${CIRCLE_PROJECT_REPONAME}"
+                        "text": "*Repo:*\t\n${REPO}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Message:*\t\n${GIT_COMMIT_MSG}"
+                        "text": "*Message:*\t\n${MESSAGE}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Commit:*\t\n${CIRCLE_SHA1:0:7}"
+                        "text": "*Commit:*\t\n${COMMIT}"
                       },
                       {
                         "type": "mrkdwn",
-                        "text": "*Author:*\t\n${CIRCLE_USERNAME}"
+                        "text": "*Author:*\t\n${AUTHOR}"
                       }
                     ],
                     "accessory": {
