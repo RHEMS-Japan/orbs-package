@@ -24,12 +24,15 @@ parameters:
     type: string
     default: "[skip ci] update submodule"
     description: "The commit message when the submodule is pushed."
+  is_ubuntu2204:
+    type: boolean
+    default: false
+    description: "If the image is ubuntu2204, please set true this parameter."
 
 steps:
   - run:
       name: confirm
       command: echo << parameters.module-name >>
-  - add_ssh_keys
   - run:
       name: check branch name
       command: |
@@ -42,12 +45,51 @@ steps:
           echo "export CIRCLE_BRANCH=${_branch}" >> $BASH_ENV
         fi
         echo "export SUBMODULE_BRANCH=${_branch}" >> $BASH_ENV
-  - run:
-      name: update submodule
-      environment:
-        ORGANIZATION_NAME: << parameters.organization-name >>
-        MODULE_NAME: << parameters.module-name >>
-        COMMIT_MESSAGE: << parameters.commit-message >>
-        MASTER_FINGER_PRINT: << parameters.master-fingerprint >>
-        SUBM_FINGER_PRINT: << parameters.submodule-fingerprint >>
-      command: << include(scripts/update-submodule.sh) >>
+  - unless:
+      condition:
+        and:
+          - << parameters.is_ubuntu2204 >>
+          - true
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - << parameters.master-fingerprint >>
+              - << parameters.submodule-fingerprint >>
+        - run:
+            name: update submodule
+            environment:
+              ORGANIZATION_NAME: << parameters.organization-name >>
+              MODULE_NAME: << parameters.module-name >>
+              COMMIT_MESSAGE: << parameters.commit-message >>
+              MASTER_FINGER_PRINT: << parameters.master-fingerprint >>
+              SUBM_FINGER_PRINT: << parameters.submodule-fingerprint >>
+            command: << include(scripts/update-submodule.sh) >>
+  - when:
+      condition:
+        and:
+          - << parameters.is_ubuntu2204 >>
+          - true
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - << parameters.submodule-fingerprint >>
+        - run:
+            name: update submodule
+            environment:
+              ORGANIZATION_NAME: << parameters.organization-name >>
+              MODULE_NAME: << parameters.module-name >>
+              COMMIT_MESSAGE: << parameters.commit-message >>
+              SUBM_FINGER_PRINT: << parameters.submodule-fingerprint >>
+            command: << include(scripts/update-submodule-22.sh) >>
+
+        - add_ssh_keys:
+            fingerprints:
+              - << parameters.master-fingerprint >>
+
+        - run:
+            name: git push
+            environment:
+              MODULE_NAME: << parameters.module-name >>
+              COMMIT_MESSAGE: << parameters.commit-message >>
+              MASTER_FINGER_PRINT: << parameters.master-fingerprint >>
+            command: << include(scripts/git-push-for-master-22.sh) >>

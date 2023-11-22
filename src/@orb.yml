@@ -19,7 +19,7 @@ description: >
 
   rhems-japan/chatwork: 0.0.4
 
-  rhems-japan/slack: 0.0.6
+  rhems-japan/slack: 0.0.7
 
   rhems-japan/tc-cli: 0.0.9
 # What will your orb allow users to accomplish?

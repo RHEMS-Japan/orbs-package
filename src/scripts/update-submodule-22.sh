@@ -1,3 +1,7 @@
+echo "===============================================================" 
+echo "============== This command is for ubuntu22.04. ==============="
+echo "===============================================================" 
+
 echo "check ssh config ----------------------------------------------"
 if [ -f ~/.ssh/config ]; then
   cat ~/.ssh/config
@@ -10,10 +14,6 @@ echo ${MODULE_NAME}
 
 organization_name=$(eval echo ${ORGANIZATION_NAME})
 module_name=$(eval echo ${MODULE_NAME})
-commit_message=$(eval echo ${COMMIT_MESSAGE})
-if [ "${commit_message}" = "[skip ci] update submodule" ]; then
-  commit_message="${commit_message}: ${module_name}"
-fi
 
 submodule_url=$(echo ${CIRCLE_REPOSITORY_URL} | sed "s/${CIRCLE_PROJECT_REPONAME}/${module_name}/")
 
@@ -25,7 +25,7 @@ if [[ -n ${ORGANIZATION_NAME} ]]; then
 fi
 
 function use-key() {
-  # $1 : ${SUBM_FINGER_PRINT} or ${MASTER_FINGER_PRINT}
+  # $1 : ${SUBM_FINGER_PRINT}
   _key=$(eval echo $1 | sed -e 's/://g')
   export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa_${_key}"
 }
@@ -66,34 +66,5 @@ function update() {
 
 update
 
-use-key ${MASTER_FINGER_PRINT}
-git branch --set-upstream-to=origin/${CIRCLE_BRANCH} ${CIRCLE_BRANCH}
-git pull --no-edit
-git commit -a -m "${commit_message}" || true
-
-set +e
-git push -u origin ${CIRCLE_BRANCH}
-RESULT=$?
-echo "RESULT = ${RESULT}"
-if [ $RESULT -ne 0 ]; then
-  for i in {2..10};
-  do
-    echo -e "\n<< Retry $i >>\n"
-    sleep 3
-    git reset --hard HEAD^
-    git pull --no-edit
-    update
-    use-key ${MASTER_FINGER_PRINT}
-    git push -u origin ${CIRCLE_BRANCH}
-    if [ $? -eq 0 ]; then
-      break
-    fi
-  done
-  if [ $i -eq 10 ]; then
-    echo -e "\n tried 10 times, but it failed, so it ends. \n"
-    set -e
-    exit 1
-  fi
-else
-  echo 'Success'
-fi
+# reset config
+rm -rf ~/.ssh/config
