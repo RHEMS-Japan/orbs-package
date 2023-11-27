@@ -27,7 +27,10 @@ parameters:
   is_reset_ssh_config:
     type: boolean
     default: false
-    description: "If the image is ubuntu2204, please set true this parameter."
+    description: |
+      Delete .ssh/config after each use of fingerprint.
+      Enable when using Ubuntu22-based executor.
+      However, please note that add_ssh_keys before enabling this value will be disabled.
 
 steps:
   - run:
