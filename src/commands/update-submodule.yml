@@ -24,7 +24,7 @@ parameters:
     type: string
     default: "[skip ci] update submodule"
     description: "The commit message when the submodule is pushed."
-  is_ubuntu2204:
+  is_reset_ssh_config:
     type: boolean
     default: false
     description: "If the image is ubuntu2204, please set true this parameter."
@@ -48,7 +48,7 @@ steps:
   - unless:
       condition:
         and:
-          - << parameters.is_ubuntu2204 >>
+          - << parameters.is_reset_ssh_config >>
           - true
       steps:
         - add_ssh_keys:
@@ -67,7 +67,7 @@ steps:
   - when:
       condition:
         and:
-          - << parameters.is_ubuntu2204 >>
+          - << parameters.is_reset_ssh_config >>
           - true
       steps:
         - add_ssh_keys:
