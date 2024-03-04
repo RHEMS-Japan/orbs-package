@@ -1,4 +1,4 @@
 description: >
   This is a default executor.
-machine:
-  image: ubuntu-2004:202201-02
+docker:
+  - image: cimg/base:2024.02
