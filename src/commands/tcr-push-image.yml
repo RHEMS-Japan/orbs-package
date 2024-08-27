@@ -23,4 +23,6 @@ steps:
         TCR_ACCESS_DOMAIN=$(eval echo << parameters.access-domain >>)
         TCR_NAMESPACE=$(eval echo << parameters.namespace >>)
 
-        docker push ${TCR_ACCESS_DOMAIN}/${TCR_NAMESPACE}/<< parameters.image >>:<< parameters.tag >>
+        set -x
+          docker push ${TCR_ACCESS_DOMAIN}/${TCR_NAMESPACE}/<< parameters.image >>:<< parameters.tag >>
+        set +x

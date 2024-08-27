@@ -29,6 +29,12 @@ parameters:
     type: string
     default: .
     description: Path to the directory containing your Dockerfile and build context. Defaults to . (working directory).
+  platform:
+    type: string
+    default: linux/amd64
+    description: >-
+      Platform targets for the docker image, multi arch images. Ex.
+      linux/amd64,linux/arm64.
   dockerfile:
     type: string
     default: Dockerfile
@@ -53,12 +59,9 @@ steps:
       registry-id: << parameters.registry-id >>
       extra-build-args: << parameters.extra-build-args >>
       path: << parameters.path >>
+      platform: << parameters.platform >>
+      push-image: true
       dockerfile: << parameters.dockerfile >>
-      namespace: << parameters.namespace >>
-      image: << parameters.image >>
-      tag: << parameters.tag >>
-  - tcr-push-image:
-      access-domain: << parameters.access-domain >>
       namespace: << parameters.namespace >>
       image: << parameters.image >>
       tag: << parameters.tag >>
