@@ -1,27 +1,30 @@
 description: >
   Install kustomize for your job.
-# What will this command do?
-# Descriptions should be short, simple, and clear.
 
 parameters:
   version:
     type: string
-    description: "ex. v4.4.1"
+    description: "ex. v5.7.1"
     default: "latest"
 
 steps:
   - run:
       name: install kustomize
-      working_directory: /bin
       command: |
-        if [ -f "kustomize" ]; then
+        if [ -f "/usr/local/bin/kustomize" ]; then
           echo "kustomize already installed"
+          kustomize version
+          exit 0
         elif [ << parameters.version >> = "latest" ]; then
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | sudo bash
+          VERSION=$(curl -sI https://github.com/kubernetes-sigs/kustomize/releases/latest \
+          | grep -i location: \
+          | sed -E 's#.*/(v[0-9]+\.[0-9]+\.[0-9]+).*#\1#')
         else
-          _version=$(echo << parameters.version >> | sed -e "s/v//g")
-          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | sudo bash -s ${_version}
+          VERSION=<< parameters.version >>
         fi
-  - run:
-      name: confirm
-      command: kustomize version
+        echo "install version: $VERSION"
+
+        curl -L -o kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize/${VERSION}/kustomize_${VERSION}_linux_amd64.tar.gz
+        tar -zxvf kustomize.tar.gz
+        sudo mv kustomize /usr/local/bin/
+        kustomize version

@@ -13,8 +13,13 @@ parameters:
   to:
     type: string
     description: "Image name after editing."
+  kustomize-version:
+    type: string
+    description: "ex. v5.7.1"
+    default: "latest"
 steps:
-  - install-kustomize
+  - install-kustomize:
+      version: << parameters.kustomize-version >>
   - run:
       name: kustomize edit set image
       command: |
