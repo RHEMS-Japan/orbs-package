@@ -13,8 +13,18 @@ parameters:
     type: string
     default: $TC_REGION
     description: "TencentCloud region to operate in."
+  version:
+    type: string
+    default: ""
+    description: "Specific version of tccli to install. If empty, installs the latest version."
+  sdk-version:
+    type: string
+    default: ""
+    description: "Specific version of tencentcloud-sdk-python to install. If empty, installs the latest version."
 steps:
-  - install-tccli
+  - install-tccli:
+      version: << parameters.version >>
+      sdk-version: << parameters.sdk-version >>
   - run:
       name: setup tccli
       command: |

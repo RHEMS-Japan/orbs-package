@@ -3,7 +3,7 @@ version: 2.1
 description: >
   This is an orb package maintained by RHEMS Japan.
 
-  rhems-japan/k8s-tools: 0.0.7
+  rhems-japan/k8s-tools: 0.0.8
 
   rhems-japan/cisync: 0.0.14
 
