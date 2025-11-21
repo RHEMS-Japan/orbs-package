@@ -3,21 +3,21 @@ version: 2.1
 description: >
   This is an orb package maintained by RHEMS Japan.
 
-  rhems-japan/k8s-tools: 0.0.8
+  rhems-japan/k8s-tools: 0.0.7
 
-  rhems-japan/cisync: 0.0.14
+  rhems-japan/cisync: 0.0.13
 
   rhems-japan/blue-deploy: 0.0.5
 
-  rhems-japan/secret-manager: 0.0.2
+  rhems-japan/secret-manager: 0.0.1
 
-  rhems-japan/config-merge: 0.0.4
+  rhems-japan/config-merge: 0.0.3
 
-  rhems-japan/workflow: 0.0.35
+  rhems-japan/workflow: 0.0.34
 
-  rhems-japan/badges: 0.0.16
+  rhems-japan/badges: 0.0.15
 
-  rhems-japan/chatwork: 0.0.4
+  rhems-japan/chatwork: 0.0.3
 
   rhems-japan/slack: 0.0.8
 

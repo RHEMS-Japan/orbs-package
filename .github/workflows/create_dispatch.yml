@@ -45,16 +45,16 @@ jobs:
         cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
         cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
 
-    - name: set orb version
-      run: |
-        for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow badges chatwork slack tc-cli; do
-          latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
-          major=$(echo ${latest_ver} | cut -d "." -f 1)
-          minor=$(echo ${latest_ver} | cut -d "." -f 2)
-          patch=$(echo ${latest_ver} | cut -d "." -f 3)
-          latest_ver=${major}.${minor}.$((${patch} + 1))
-          sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
-        done
+    # - name: set orb version
+    #   run: |
+    #     for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow badges chatwork slack tc-cli; do
+    #       latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
+    #       major=$(echo ${latest_ver} | cut -d "." -f 1)
+    #       minor=$(echo ${latest_ver} | cut -d "." -f 2)
+    #       patch=$(echo ${latest_ver} | cut -d "." -f 3)
+    #       latest_ver=${major}.${minor}.$((${patch} + 1))
+    #       sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
+    #     done
 
     - name: Git commit
       uses: stefanzweifel/git-auto-commit-action@v4
@@ -86,16 +86,16 @@ jobs:
         cp ../${{ env.REPO_NAME }}/src/executors/*.yml src/executors || true
         cp ../${{ env.REPO_NAME }}/src/tests/*.bats    src/tests     || true
 
-    - name: set orb version
-      run: |
-        for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow badges chatwork slack tc-cli; do
-          latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
-          major=$(echo ${latest_ver} | cut -d "." -f 1)
-          minor=$(echo ${latest_ver} | cut -d "." -f 2)
-          patch=$(echo ${latest_ver} | cut -d "." -f 3)
-          latest_ver=${major}.${minor}.$((${patch} + 1))
-          sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
-        done
+    # - name: set orb version
+    #   run: |
+    #     for orb in k8s-tools cisync blue-deploy secret-manager config-merge workflow badges chatwork slack tc-cli; do
+    #       latest_ver=$(curl -s "https://badges.circleci.com/orbs/rhems-japan/${orb}.svg" | grep -o "[0-9]*\.[0-9]*\.[0-9]*" | head -n1)
+    #       major=$(echo ${latest_ver} | cut -d "." -f 1)
+    #       minor=$(echo ${latest_ver} | cut -d "." -f 2)
+    #       patch=$(echo ${latest_ver} | cut -d "." -f 3)
+    #       latest_ver=${major}.${minor}.$((${patch} + 1))
+    #       sed -i -e "s/${orb}: [0-9]*\.[0-9]*\.[0-9]*/${orb}: ${latest_ver}/" src/@orb.yml
+    #     done
 
     - name: Git commit
       uses: stefanzweifel/git-auto-commit-action@v4
